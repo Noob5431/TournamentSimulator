@@ -1,4 +1,4 @@
-#include <list.h>
+#include "list.h"
 
 Team *team_add_element(Team *head, char *name)
 {
@@ -28,25 +28,25 @@ Player *player_add_element(Player *head, char *firstName, char *lastName, int po
     return newPlayer;
 }
 
-void print_teams(Team *head,int printPlayers)
+void print_teams(Team *head,int printPlayers, FILE *file)
 {
     if(head)
     {
-        printf("%s\n",head->name);
+        fprintf(file,"%s\n",head->name);
         if(printPlayers)
         {
-            print_players(head->players);
+            print_players(head->players,file);
         }
-        print_teams(head->next,print_players);
+        print_teams(head->next,printPlayers,file);
     }
 }
 
-void print_players(Player *head)
+void print_players(Player *head,FILE *file)
 {
     if(head)
     {
-        printf("--------%s %s %d\n",head->secondName,head->firstName,head->points);
-        print_players(head->next);
+        fprintf(file,"--------%s %s %d\n",head->secondName,head->firstName,head->points);
+        print_players(head->next,file);
     }
 }
 
@@ -73,4 +73,109 @@ void delete_players(Player *head)
         free(head);
         delete_players(temp);
     }
+}
+
+float team_score(Team *team)
+{
+    float score = 0;
+    int number_of_players=0;
+    Player *current_player = team->players;
+
+    while(current_player)
+    {
+        score+=current_player->points;
+        number_of_players++;
+        current_player = current_player->next;
+    }
+    if(number_of_players == 0) return 0;
+    return score/number_of_players;
+}
+
+int remove_worst_team(Team **head)
+{
+    if(!(*head)) return -1;
+
+
+    Team *current_team = *head;
+    float smallest_score = team_score(*head);
+
+    while(current_team)
+    {
+        float score = team_score(current_team);
+        if(score<smallest_score)
+            smallest_score = score;
+        current_team = current_team->next;
+    }
+
+    current_team = *head;
+    Team *last_team = *head;
+    while(current_team)
+    {
+        if(team_score(current_team) == smallest_score)
+        {
+            if(current_team == *head)
+            {
+                *head = current_team->next;
+            }
+            else
+            {
+                last_team->next = current_team->next;
+            }
+            delete_players(current_team->players);
+            free(current_team->name);
+            free(current_team);
+            return 0;
+        }
+        last_team = current_team;
+        current_team = current_team->next;
+    }
+
+    return -1;
+}
+
+void add_score(Player *players, int to_add)
+{
+    while(players)
+    {
+        players->points += to_add;
+        players = players->next;
+    }
+}
+
+Player* copy_team(Player *player)
+{
+    Player *copy = NULL;
+
+    while(player)
+    {
+        copy = player_add_element(copy,player->firstName,player->secondName,player->points);
+        player = player->next;
+    }
+
+    return copy;
+}
+
+int team_size(Team *team)
+{
+    int size = 0;
+    
+    while(team)
+    {
+        size++;
+        team = team->next;
+    }
+
+    return size;
+}
+
+Team* team_at_index(Team* teams,int index)
+{
+    if(index<0) return NULL;
+
+    for(int i=0;i<index;i++)
+    {
+        teams = teams->next;
+    }
+
+    return teams;
 }
