@@ -1,8 +1,26 @@
-# Checker Tema 1 - 2021
-Checker-ul este o aplicație de testare automată a temelor. Este un produs open-source realizat de către și pentru studenții din Facultatea de Automatică și Calculatoare - UPB, și este menit atât să usureze munca asistenților de a corecta teme cât și sa ofere studenților o evaluare cât mai obiectivă.
+Andrei Buscan
+314AA
 
-## Rularea checker-ului
-Pentru a verifica functionarea checker-ului va trebui sa descarcati tot depozitul de mai sus, dupa aceasta deschideti un terminal in folderul in care se afla depozitul descarcat si scrieti urmatoarea comanda:
-```shell
-./checker.sh
-````
+cerinta 1:
+am creeat o lista si am scris in fisier numele echipelor
+
+cerinta 2:
+am cautat echipa cu cel mai mic scor, am eliminat-o si am repetat acest
+proces pana au mai ramas n echipe
+
+cerinta 3:
+am creeat un queue unde am pus cate doua echipe in ordinea din lista
+am calculat castigatorul si invinsul pentru fiecare meci si i-am pus in stack-urile respective
+am sters stack-ul cu pierzatori
+am repetat procesul de mai sus pana a mai ramas doar o echipa in queue
+(cand mai sunt doar 8 echipe le salvez intr-o lista)
+
+cerinta 4:
+am creeat un BST din lista cu cele 8 echipe (am adaugat element cu 
+element din lista in pozitia corespunzatoare din BST)
+am parcurs BST-ul in inordere de la dreapta la stanga si am scris in fisier
+
+cerinta 5:
+din BST-ul de la 4 am creeat o lista crescatoare
+din lista crescatoare am creeat un AVL
+am scris in fisier elementele de pe nivelul 2
